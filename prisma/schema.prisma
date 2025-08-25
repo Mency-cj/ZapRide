@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  role        Role 
+  name        String?
+  phone       String?   @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  customer    Customer?
+  driver      Driver?
+  ridesAsCustomer Ride[] @relation("CustomerRides")
+  ridesAsDriver   Ride[] @relation("DriverRides")
+}
+
+model Customer {
+  id        Int    @id @default(autoincrement())
+  userId    Int    @unique
+  savedDrivers Driver[] @relation("SavedDrivers")
+
+  user      User   @relation(fields: [userId], references: [id])
+}
+
+model Driver {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  vehicleNo    String
+  vehicleModel String?
+  licenseNo    String
+  idProof      String?
+  profilePhoto String?
+
+  user         User     @relation(fields: [userId], references: [id])
+  rides        Ride[]   @relation("DriverRides")
+  savedByCustomers Customer[] @relation("SavedDrivers")
+}
+
+model Ride {
+  id            Int       @id @default(autoincrement())
+  customerId    Int
+  driverId      Int?
+  pickupLocation String
+  dropLocation   String
+  status        String    @default("PENDING")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  customer   User   @relation("CustomerRides", fields: [customerId], references: [id])
+  driver     User?  @relation("DriverRides", fields: [driverId], references: [id])
+  notifications Notification[]
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  rideId    Int
+  message   String
+  sentTo    Int 
+  type      String
+  createdAt DateTime @default(now())
+
+  ride Ride @relation(fields: [rideId], references: [id])
+}
+
+enum Role {
+  CUSTOMER
+  DRIVER
+}
