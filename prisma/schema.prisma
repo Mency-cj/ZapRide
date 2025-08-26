@@ -23,32 +23,43 @@ model User {
   phone       String?   @unique
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  vehicleNo    String
   licenseNo    String
-  idProof      String?
-  profilePhoto String?
 
-  customer    Customer?
-  driver      Driver?
+  vehicles        Vehicle[]
   ridesAsCustomer Ride[] @relation("CustomerRides")
   ridesAsDriver   Ride[] @relation("DriverRides")
 }
 
+model Vehicle {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  vehicleNo    String   @unique
+  vehicleType  String   
+  vehicleModel String?
+  idProof      String?
+  profilePhoto String?
+  isEnabled    Boolean  @default(true) 
+
+  user   User   @relation(fields: [userId], references: [id])
+  rides  Ride[]
+}
 
 model Ride {
-  id            Int       @id @default(autoincrement())
-  customerId    Int
-  driverId      Int?
+  id             Int       @id @default(autoincrement())
+  customerId     Int
+  driverId       Int?
+  vehicleId      Int?
   pickupLocation String
   dropLocation   String
-  pickupTime     DateTime
-  dropoffTime    DateTime?  
-  status        String    @default("PENDING")
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  pickupTime     DateTime?
+  dropoffTime    DateTime?
+  status         String @default("PENDING")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 
-  customer   User   @relation("CustomerRides", fields: [customerId], references: [id])
-  driver     User?  @relation("DriverRides", fields: [driverId], references: [id])
+  customer   User     @relation("CustomerRides", fields: [customerId], references: [id])
+  driver     User?    @relation("DriverRides", fields: [driverId], references: [id])
+  vehicle    Vehicle? @relation(fields: [vehicleId], references: [id])
   notifications Notification[]
 }
 
