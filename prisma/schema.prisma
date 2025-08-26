@@ -23,6 +23,10 @@ model User {
   phone       String?   @unique
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  vehicleNo    String
+  licenseNo    String
+  idProof      String?
+  profilePhoto String?
 
   customer    Customer?
   driver      Driver?
@@ -30,27 +34,6 @@ model User {
   ridesAsDriver   Ride[] @relation("DriverRides")
 }
 
-model Customer {
-  id        Int    @id @default(autoincrement())
-  userId    Int    @unique
-  savedDrivers Driver[] @relation("SavedDrivers")
-
-  user      User   @relation(fields: [userId], references: [id])
-}
-
-model Driver {
-  id           Int      @id @default(autoincrement())
-  userId       Int      @unique
-  vehicleNo    String
-  vehicleModel String?
-  licenseNo    String
-  idProof      String?
-  profilePhoto String?
-
-  user         User     @relation(fields: [userId], references: [id])
-  rides        Ride[]   @relation("DriverRides")
-  savedByCustomers Customer[] @relation("SavedDrivers")
-}
 
 model Ride {
   id            Int       @id @default(autoincrement())
@@ -58,6 +41,8 @@ model Ride {
   driverId      Int?
   pickupLocation String
   dropLocation   String
+  pickupTime     DateTime
+  dropoffTime    DateTime?  
   status        String    @default("PENDING")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
