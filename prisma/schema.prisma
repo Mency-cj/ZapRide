@@ -23,7 +23,6 @@ model User {
   phone       String?   @unique
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  licenseNo    String
 
   vehicles        Vehicle[]
   ridesAsCustomer Ride[] @relation("CustomerRides")
@@ -34,6 +33,7 @@ model Vehicle {
   id           Int      @id @default(autoincrement())
   userId       Int
   vehicleNo    String   @unique
+  licenseNo    String
   vehicleType  String   
   vehicleModel String?
   idProof      String?
@@ -53,7 +53,7 @@ model Ride {
   dropLocation   String
   pickupTime     DateTime?
   dropoffTime    DateTime?
-  status         String @default("PENDING")
+  status         RideStatus @default(PENDING)
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 
@@ -77,4 +77,12 @@ model Notification {
 enum Role {
   CUSTOMER
   DRIVER
+}
+
+enum RideStatus {
+  PENDING
+  ACCEPTED
+  ONGOING
+  COMPLETED
+  CANCELLED
 }

@@ -1,11 +1,13 @@
-import { Button } from "@/components/ui/button";
+// import Navbar from "@/components/Navbar";
+// import { Button } from "@/components/ui/Button";
 
 export default function Home() {
   return (
     <>
-    <div>
-      <Button>Signup</Button>
-    </div>
+      <div>
+        {/* <Navbar></Navbar>
+        <Button>Signup</Button> */}
+      </div>
     </>
   );
 }
