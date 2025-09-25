@@ -1,10 +1,13 @@
+import { Ride, RideStatus } from "@/generated/prisma";
 import prisma from "@/lib/prisma";
 
 export async function createRide(
   pickupLocation: string,
   dropLocation: string,
   pickupTime: string,
-  customerId: number
+  customerId: number,
+  driverId: number,
+  vehicleId: number
 ) {
   try {
     const ride = await prisma.ride.create({
@@ -12,9 +15,13 @@ export async function createRide(
         pickupLocation,
         dropLocation,
         pickupTime: pickupTime ? new Date(pickupTime) : null,
-        customer: {
-          connect: { id: customerId },
-        },
+        driverId,
+        vehicleId,
+        customerId,
+      },
+      include: {
+        vehicle: true,
+        customer: true,
       },
     });
     return ride;
@@ -25,10 +32,54 @@ export async function createRide(
 }
 
 export async function getRidesByCustomerId(customerId: number) {
-  return prisma.ride.findMany({
-    where: { customerId },
-    orderBy: { pickupTime: "desc" },
-  });
+  try {
+    const rides = await prisma.ride.findMany({
+      where: { customerId },
+      include: {
+        vehicle: {
+          select: {
+            vehicleType: true,
+            vehicleNo: true,
+            profilePhoto: true,
+          },
+        },
+      },
+      orderBy: { pickupTime: "desc" },
+    });
+    return rides;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getRidesByDriverId(driverId: number) {
+  try {
+    const rides = await prisma.ride.findMany({
+      where: { driverId },
+      include: {
+        vehicle: {
+          select: {
+            vehicleType: true,
+            vehicleNo: true,
+            profilePhoto: true,
+          },
+        },
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+          },
+        },
+      },
+      orderBy: { pickupTime: "desc" },
+    });
+    return rides;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
 }
 
 export async function cancelRide(rideId: number, customerId: number) {
@@ -47,4 +98,22 @@ export async function cancelRide(rideId: number, customerId: number) {
   });
 
   return cancelledRide;
+}
+
+export async function updateRideStatus(rideId: number, status: RideStatus) {
+  try {
+    const ride = await prisma.ride.update({
+      where: { id: rideId },
+      data: { status },
+      include: {
+        vehicle: true,
+        customer: true,
+        driver: true,
+      },
+    });
+    return ride;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
 }

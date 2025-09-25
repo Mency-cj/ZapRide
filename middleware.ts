@@ -1,16 +1,13 @@
-
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
-
-
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith("/api/rides")) {
-    const authHeader = req.headers.get("authorization") || req.headers.get("Authorization");
-console.log("AUTH HEADER:", authHeader);
-
+    const authHeader =
+      req.headers.get("authorization") || req.headers.get("Authorization");
+    console.log("AUTH HEADER:", authHeader);
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -27,7 +24,7 @@ console.log("AUTH HEADER:", authHeader);
       return NextResponse.next({
         request: { headers: requestHeaders },
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }

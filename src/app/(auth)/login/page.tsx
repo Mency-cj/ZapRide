@@ -23,11 +23,11 @@ export default function Login() {
         localStorage.setItem("token", res.token);
 
         if (res.role === "CUSTOMER") {
-          router.push("/customer");
+          router.push("/customer/home");
         } else if (res.role === "DRIVER") {
-          router.push("/driver");
+          router.push("/driver/home");
         } else {
-          router.push("/"); // fallback
+          router.push("/");
         }
 
         reset();

@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { pickupLocation, dropLocation, pickupTime } = body;
+    const { pickupLocation, dropLocation, pickupTime, driverId, vehicleId } =
+      body;
     if (!pickupLocation || !dropLocation || !pickupTime) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -31,7 +32,9 @@ export async function POST(req: Request) {
       pickupLocation,
       dropLocation,
       pickupTime,
-      customerId
+      customerId,
+      driverId,
+      vehicleId
     );
     return NextResponse.json({ ride }, { status: 201 });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

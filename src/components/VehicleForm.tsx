@@ -111,7 +111,7 @@ export default function VehicleForm({ onSuccess }: AddVehicleFormProps) {
         <input
           type="file"
           accept="image/*"
-          {...register("idProof")}
+          {...register("idProof", { required: "ID Proof is required" })}
           className="w-full border p-2 rounded-md mt-1"
         />
       </label>
@@ -121,7 +121,9 @@ export default function VehicleForm({ onSuccess }: AddVehicleFormProps) {
         <input
           type="file"
           accept="image/*"
-          {...register("profilePhoto")}
+          {...register("profilePhoto", {
+            required: "Profile Photo is required",
+          })}
           className="w-full border p-2 rounded-md mt-1"
         />
       </label>

@@ -20,8 +20,8 @@ export async function createUser(
         role,
       },
     });
-    return {user,role:user.role};
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return { user, role: user.role };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -55,7 +55,6 @@ export async function loginUser(email: string, password: string) {
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    
     throw new Error(error.message);
   }
 }

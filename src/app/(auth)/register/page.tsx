@@ -12,7 +12,7 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
   const role = watch("role");
-  const router=useRouter();
+  const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function onSubmit(data: any) {
@@ -28,22 +28,21 @@ export default function Signup() {
         // return;
       }
       if (res.role === "CUSTOMER") {
-          router.push("/customer");
-        } else if (res.role === "DRIVER") {
-          router.push("/driver");
-        } else {
-          router.push("/");
-        }
+        router.push("/customer/home");
+      } else if (res.role === "DRIVER") {
+        router.push("/driver/home");
+      } else {
+        router.push("/");
+      }
 
-        reset();
-      
-    } catch(error) {
-        console.error(error);
+      reset();
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="flex justify-center items-center w-auto py-13 bg-gray-100">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-10 rounded-lg shadow-md w-full max-w-md space-y-4"
@@ -113,6 +112,12 @@ export default function Signup() {
           >
             Signup
           </button>
+          <p className="p-2 text-center">
+            Already have an account?{" "}
+            <a href="/login" className="text-blue-600 hover:underline">
+              Login
+            </a>
+          </p>
         </form>
       </div>
     </>
