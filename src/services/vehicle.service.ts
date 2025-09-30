@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { profile } from "console";
 
 export async function createVehicle(
   vehicleNo: string,

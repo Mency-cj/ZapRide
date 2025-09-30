@@ -1,4 +1,4 @@
-import { Ride, RideStatus } from "@/generated/prisma";
+import {  RideStatus } from "@/generated/prisma";
 import prisma from "@/lib/prisma";
 
 export async function createRide(
