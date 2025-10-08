@@ -1,10 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const router = useRouter();
+
+   useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    setIsLoggedIn(false); 
+    router.push("/login");
+  };
 
   return (
     <div className="bg-gray-300">
@@ -30,14 +45,22 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-2">
-          <Link href="/login">
-            <Button className="rounded-full" variant="ghost">
-              Log in
+          {isLoggedIn ? (
+            <Button className="rounded-full" onClick={handleLogout}>
+              Logout
             </Button>
-          </Link>
-          <Link href="/register">
-            <Button className="rounded-full">Sign Up</Button>
-          </Link>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button className="rounded-full" variant="ghost">
+                  Log in
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button className="rounded-full">Sign Up</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="md:hidden">

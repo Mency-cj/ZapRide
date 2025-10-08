@@ -39,7 +39,10 @@ const saveFile = async (file: File | null, prefix: string) => {
 };
 export async function POST(request: Request) {
   try {
-    const token = request.headers.get("Authorization")?.split(" ")[1];
+    const authHeader =
+      request.headers.get("authorization") ||
+      request.headers.get("Authorization");
+    const token = authHeader?.split(" ")[1];
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

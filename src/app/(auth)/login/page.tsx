@@ -1,11 +1,14 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export default function Login() {
   const { register, handleSubmit, reset } = useForm();
   const router = useRouter();
+  const { setIsLoggedIn } = useAuth();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function onSubmit(data: any) {
     try {
@@ -19,9 +22,9 @@ export default function Login() {
       });
       const res = await response.json();
       if (response.ok) {
-        console.log("Login Successfull");
+        console.log("Login Successful");
         localStorage.setItem("token", res.token);
-
+        setIsLoggedIn(true);
         if (res.role === "CUSTOMER") {
           router.push("/customer/home");
         } else if (res.role === "DRIVER") {

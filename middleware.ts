@@ -4,7 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith("/api/rides")) {
+  if (
+    pathname.startsWith("/api/rides") ||
+    pathname.startsWith("/api/vehicles")
+  ) {
     const authHeader =
       req.headers.get("authorization") || req.headers.get("Authorization");
     console.log("AUTH HEADER:", authHeader);

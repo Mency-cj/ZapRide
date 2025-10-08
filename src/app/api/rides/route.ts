@@ -13,12 +13,14 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    const authHeader = req.headers.get("authorization");
+   const authHeader =
+      req.headers.get("authorization") ||
+      req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const token = authHeader.split(" ")[1];
+ 
+    const token = authHeader?.split(" ")[1];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let decoded: any;
     try {
