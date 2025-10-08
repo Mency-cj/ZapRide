@@ -38,10 +38,9 @@ export default function Driver() {
       return;
     }
 
-    const driverId = localStorage.getItem("driverId");
 
     try {
-      const response = await fetch(`/api/rides/driver/${driverId}`, {
+      const response = await fetch(`/api/rides/driver`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
