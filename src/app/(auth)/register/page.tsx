@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +14,7 @@ export default function Signup() {
   } = useForm();
   const role = watch("role");
   const router = useRouter();
+  const { setIsLoggedIn } = useAuth();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function onSubmit(data: any) {
@@ -27,6 +29,10 @@ export default function Signup() {
         console.log("Signup error:", res.error);
         // return;
       }
+       if (res.token) {
+      localStorage.setItem("token", res.token);
+      setIsLoggedIn(true);
+    }
       if (res.role === "CUSTOMER") {
         router.push("/customer/home");
       } else if (res.role === "DRIVER") {

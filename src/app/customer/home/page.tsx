@@ -5,11 +5,13 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import BookingRide from "../bookingRide/page";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Customer() {
   const [rides, setRides] = useState<any[]>([]);
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<any>();
+  const { token } = useAuth();
 
   async function fetchRides() {
     const token = localStorage.getItem("token");
@@ -43,6 +45,7 @@ export default function Customer() {
   }
 
   useEffect(() => {
+    if (!token) return;
     fetchRides();
     fetchVehicles();
   }, []);
