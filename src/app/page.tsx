@@ -39,12 +39,12 @@ export default function Home() {
           Our Services
           <span className="absolute left-0 bottom-0 w-3/4 h-[2px] bg-black"></span>
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-10">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
           {services.map((service) => {
             return (
               <div
                 key={service.name}
-                className="flex flex-col items-center bg-blue-50 rounded-xl p-6 w-40 sm:w-48 sm:p-0 md:w-52"
+                className="flex flex-col items-center bg-blue-50 rounded-xl p-6 sm:w-48 sm:p-0 md:w-52"
               >
                 <div className="w-32 h-32 relative mb-4 sm:w-32 sm:h-32 lg:w-36 lg:h-36">
                   <Image

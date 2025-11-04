@@ -38,7 +38,6 @@ export default function Driver() {
       return;
     }
 
-
     try {
       const response = await fetch(`/api/rides/driver`, {
         headers: {
@@ -166,13 +165,13 @@ export default function Driver() {
       </div>
       <div className="m-12 pt-8">
         <h2 className="text-2xl font-bold mb-6 text-center">Your Vehicles</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+        <div>
           {vehicles.length === 0 ? (
             <p className="text-gray-500 text-center">
               No vehicles registered yet.
             </p>
           ) : (
-            <div className="grid sm:grid-cols-2 md:grid-cols-2 gap-6">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
               {vehicles.map((v) => (
                 <div
                   key={v.id}
@@ -205,15 +204,16 @@ export default function Driver() {
                   </span>
                 </div>
               ))}
+              <div
+                onClick={() => setShowForm(true)}
+                className="cursor-pointer bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:border-blue-500 hover:bg-blue-50 transition"
+              >
+                <FiPlus className="w-10 h-10 text-gray-400 mb-2" />
+                <p className="font-semibold text-gray-600">Add New Vehicle</p>
+              </div>
             </div>
           )}
-          <div
-            onClick={() => setShowForm(true)}
-            className="cursor-pointer bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:border-blue-500 hover:bg-blue-50 transition"
-          >
-            <FiPlus className="w-10 h-10 text-gray-400 mb-2" />
-            <p className="font-semibold text-gray-600">Add New Vehicle</p>
-          </div>
+
           {showForm && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative">
@@ -221,7 +221,7 @@ export default function Driver() {
                   onClick={() => setShowForm(false)}
                   className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                 >
-                  <RxCross2 className="w-5 h-5" />
+                  <RxCross2 className="w-5 h-5 cursor-pointer"/>
                 </button>
 
                 <h3 className="text-xl font-semibold mb-4 text-center">
