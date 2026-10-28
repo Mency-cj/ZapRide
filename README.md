@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ZapRide
+
+A full-stack ride-booking web app where customers book rides and drivers manage their profiles and vehicles. Built with Next.js, Express, Prisma and MySQL, with JWT authentication and role-based access.
+
+**Live demo:** [zap-ride-rho.vercel.app](https://zap-ride-rho.vercel.app)
+
+---
+
+## Features
+
+**Customers**
+- Register, log in, and stay authenticated with JWT
+- Browse available rides and vehicles
+- Book a ride and view booking details
+
+**Drivers**
+- Separate driver authentication and profile management
+- Add and manage vehicle information
+
+**Security**
+- Passwords hashed with bcrypt
+- JWT auth middleware protecting API routes
+- Role-based access (customer vs driver)
+
+---
+
+## Tech Stack
+
+| Layer | Tools |
+|---|---|
+| Frontend | Next.js (App Router), React, Tailwind CSS, shadcn/ui |
+| Backend | Node.js, Express.js, REST API |
+| Database | MySQL, Prisma ORM |
+| Auth | JWT, bcrypt |
+| Tooling | Git, Postman, Vercel, XAMPP (local MySQL) |
+
+---
+
+## Architecture
+
+```text
+Next.js frontend  ──REST──▶  Express API  ──▶  JWT middleware
+                                  │
+                                  ▼
+                             Prisma ORM
+                                  │
+                                  ▼
+                               MySQL
+```
+
+**Data models:** `User`, `Driver`, `Vehicle`, `Ride`. A driver owns vehicles, and a ride links a customer, a driver and a vehicle.
+
+---
+
+## Project Structure
+
+```text
+ZapRide/
+├── frontend/          # Next.js app (app/, components/, public/)
+└── backend/           # Express API (controllers/, routes/, middleware/, prisma/)
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
+**Prerequisites:** Node.js 18+, MySQL (or XAMPP)
+
+### 1. Clone and install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Mency/ZapRide.git
+cd ZapRide
+
+cd backend && npm install
+cd ../frontend && npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy the example files and fill in your own values:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Set up the database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Start MySQL, create a database named `zapride`, then from `backend/`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
 
-## Deploy on Vercel
+### 4. Run
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# terminal 1 - backend
+cd backend && npm run dev
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# terminal 2 - frontend
+cd frontend && npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## API Overview
+
+All protected routes need the header `Authorization: Bearer <token>`.
+
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/auth/register` | Create an account | No |
+| POST | `/api/auth/login` | Log in, receive JWT | No |
+
+A Postman collection can be exported into the repo for easy testing.
+
+---
+
+## Roadmap
+
+- [ ] Online payments
+- [ ] Real-time driver tracking and map/route integration
+- [ ] Real-time notifications
+- [ ] Ride cancellation and fare calculation
+- [ ] Ratings and reviews
+- [ ] Admin dashboard
+- [ ] Automated tests
+
+---
+
+## What I Learned
+
+Building ZapRide gave me hands-on practice with REST API design, JWT authentication and authorization, relational modelling with Prisma, the Next.js App Router, deploying a split frontend/backend, and debugging production issues.
+
+---
+
+## Author
+
+**Mency** — Full Stack Developer
+[GitHub](https://github.com/Mency) · [LinkedIn](www.linkedin.com/in/little-mency-c-j-a69312250) · [Portfolio](https://personal-portfolio-three-woad-53.vercel.app/)
